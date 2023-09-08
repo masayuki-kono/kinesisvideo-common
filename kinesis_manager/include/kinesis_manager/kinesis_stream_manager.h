@@ -19,7 +19,7 @@
 #include <aws/kinesis/model/Record.h>
 #include <aws_common/sdk_utils/client_configuration_provider.h>
 #include <aws_common/sdk_utils/logging/aws_log_system.h>
-#include <kinesis-video-producer/KinesisVideoProducer.h>
+#include <KinesisVideoProducer.h>
 #include <kinesis_manager/common.h>
 #include <kinesis_manager/kinesis_client_facade.h>
 #include <kinesis_manager/stream_definition_provider.h>

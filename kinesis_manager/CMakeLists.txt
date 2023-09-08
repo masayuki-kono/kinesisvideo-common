@@ -5,18 +5,13 @@ set(KINESIS_MANAGER_VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 14)
 
 find_package(aws_common REQUIRED)
-if(AWSSDK_FOUND)
-  set(SERVICE kinesis)
-  AWSSDK_DETERMINE_LIBS_TO_LINK(SERVICE AWSSDK_LIBS_TO_LINK)
-  link_directories("${AWSSDK_LIB_DIR}")
-endif()
 
+set(SERVICE_COMPONENTS kinesis)
+list(APPEND ${PROJECT_NAME}_IMPORTED_LIBRARIES aws-cpp-sdk-kinesis KinesisVideoProducer cproducer)
 find_package(CURL REQUIRED)
 
 ## Add KVS SDK libraries
 include(FindKVSSDK.cmake)
-add_subdirectory(kvssdk)
-
 
 #############
 ## Library ##
@@ -26,27 +21,12 @@ add_subdirectory(kvssdk)
 add_library(${PROJECT_NAME} SHARED src/stream_definition_provider.cpp 
   src/kinesis_stream_manager.cpp src/default_callbacks.cpp
   src/kinesis_video_stream_interface.cpp src/kinesis_video_producer_interface.cpp)
-set(${PROJECT_NAME}_IMPORTED_LIBRARIES producer)
-add_dependencies(${PROJECT_NAME} KVS_SDK_IMPORT)
 
-foreach(_imported_lib ${${PROJECT_NAME}_IMPORTED_LIBRARIES})
-  if(NOT TARGET ${_imported_lib})
-    add_library(${_imported_lib} UNKNOWN IMPORTED)
-    set_target_properties(${_imported_lib} PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${AWSSDK_EXTERNAL_INCLUDE_DIR}")
-    set_target_properties(${_imported_lib} PROPERTIES
-      IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
-      IMPORTED_LOCATION "${KVSSDK_EXTERNAL_LIB_DIR}/lib${_imported_lib}.so")
-    set_property(TARGET producer APPEND PROPERTY
-      IMPORTED_CONFIGURATIONS RELEASE)
-  endif()
-endforeach()
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${aws_common_INCLUDE_DIRS} ${AWSSDK_INCLUDE_DIR} ${KVSSDK_EXTERNAL_INCLUDE_DIR})
+  target_include_directories(${PROJECT_NAME} PRIVATE ${aws_common_INCLUDE_DIRS} ${AWSSDK_INCLUDE_DIR} ${KVSSDK_EXTERNAL_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_link_libraries(${PROJECT_NAME} ${AWSSDK_LIBS_TO_LINK} ${${PROJECT_NAME}_IMPORTED_LIBRARIES} log4cplus)
+target_link_libraries(${PROJECT_NAME}  ${${PROJECT_NAME}_IMPORTED_LIBRARIES} log4cplus )
 
 
 #############

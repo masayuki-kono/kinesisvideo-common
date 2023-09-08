@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include <kinesis-video-producer/KinesisVideoStream.h>
+#include <KinesisVideoStream.h>
 
 namespace Aws {
 namespace Kinesis {

@@ -16,8 +16,8 @@
 #include <aws/kinesis/model/GetShardIteratorRequest.h>
 #include <aws/kinesis/model/ListShardsRequest.h>
 #include <aws/kinesis/model/ListShardsResult.h>
-#include <kinesis-video-producer/ClientCallbackProvider.h>
-#include <kinesis-video-producer/KinesisVideoProducer.h>
+#include <ClientCallbackProvider.h>
+#include <KinesisVideoProducer.h>
 #include <kinesis_manager/default_callbacks.h>
 #include <kinesis_manager/kinesis_client_facade.h>
 #include <kinesis_manager/kinesis_stream_manager.h>

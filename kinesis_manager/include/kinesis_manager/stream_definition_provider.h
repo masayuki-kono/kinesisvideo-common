@@ -14,7 +14,7 @@
  */
 #pragma once
 #include <aws_common/sdk_utils/client_configuration_provider.h>
-#include <kinesis-video-producer/KinesisVideoProducer.h>
+#include <KinesisVideoProducer.h>
 #include <kinesis_manager/common.h>
 
 

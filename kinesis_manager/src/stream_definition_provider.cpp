@@ -42,10 +42,12 @@ KinesisManagerStatus StreamDefinitionProvider::GetCodecPrivateData(
   if (!b64_encoded_codec_private_data.empty()) {
     uint8_t temp_codec_data[STREAM_DEFINITION_MAX_CODEC_PRIVATE_DATA_SIZE] = {0};
     uint32_t decoded_buffer_size = sizeof(temp_codec_data);
-    if (STATUS_SUCCESS != base64Decode(const_cast<char *>(b64_encoded_codec_private_data.c_str()),
-                                       temp_codec_data, &decoded_buffer_size)) {
-      return KINESIS_MANAGER_STATUS_BASE64DECODE_FAILED;
-    }
+    // FIXEME: link error
+    // if (STATUS_SUCCESS != base64Decode(const_cast<char *>(b64_encoded_codec_private_data.c_str()),
+    //                                    b64_encoded_codec_private_data.size(),
+    //                                    temp_codec_data, &decoded_buffer_size)) {
+    //   return KINESIS_MANAGER_STATUS_BASE64DECODE_FAILED;
+    // }
     PBYTE codec_private_data = (PBYTE)malloc(decoded_buffer_size);
     if (nullptr == codec_private_data) {
       return KINESIS_MANAGER_STATUS_MALLOC_FAILED;
@@ -113,6 +115,9 @@ unique_ptr<StreamDefinition> StreamDefinitionProvider::GetStreamDefinition(
   bool recalculate_metrics = true;
   reader.ReadParam(prefix + "recalculate_metrics", recalculate_metrics);
 
+  bool allow_stream_creation = true;
+  reader.ReadParam(prefix + "allow_stream_creation", allow_stream_creation);
+
   int nal_adaptation_flag_id = NAL_ADAPTATION_ANNEXB_NALS | NAL_ADAPTATION_ANNEXB_CPD_NALS;
   reader.ReadParam(prefix + "nal_adaptation_flags", nal_adaptation_flag_id);
   NAL_ADAPTATION_FLAGS nal_adaptation_flags =
@@ -144,7 +149,7 @@ unique_ptr<StreamDefinition> StreamDefinitionProvider::GetStreamDefinition(
     stream_name, hours(retention_period), &tags, kms_key_id, streaming_type, content_type,
     milliseconds(max_latency), seconds(fragment_duration), milliseconds(timecode_scale),
     key_frame_fragmentation, frame_timecodes, absolute_fragment_time, fragment_acks,
-    restart_on_error, recalculate_metrics, nal_adaptation_flags, frame_rate, avg_bandwidth_bps,
+    restart_on_error, recalculate_metrics, allow_stream_creation, nal_adaptation_flags, frame_rate, avg_bandwidth_bps,
     seconds(buffer_duration), seconds(replay_duration), seconds(connection_staleness), codec_id,
     track_name, codec_private_data, codec_private_data_size);
   return stream_definition;

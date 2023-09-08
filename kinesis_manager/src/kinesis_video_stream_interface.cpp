@@ -20,7 +20,10 @@ namespace Kinesis {
 
 bool KinesisVideoStreamImpl::IsReady() const  
 {
-  return video_stream_->isReady();
+  // this I/F is deleted in Release 2.0.0 (9th Jul 2019)
+  // https://github.com/awslabs/amazon-kinesis-video-streams-producer-sdk-cpp/commit/5eedbb489a3b7a24416162178478092ffbcdfc01#
+  // return video_stream_->isReady();
+  return true;
 }
 
 bool KinesisVideoStreamImpl::Stop()

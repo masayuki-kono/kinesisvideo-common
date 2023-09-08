@@ -19,10 +19,10 @@
  */
 #pragma once
 #include <aws/core/auth/AWSCredentialsProviderChain.h>
-#include <kinesis-video-producer/Auth.h>
-#include <kinesis-video-producer/ClientCallbackProvider.h>
-#include <kinesis-video-producer/DefaultCallbackProvider.h>
-#include <kinesis-video-producer/DefaultDeviceInfoProvider.h>
+#include <Auth.h>
+#include <ClientCallbackProvider.h>
+#include <DefaultCallbackProvider.h>
+#include <DefaultDeviceInfoProvider.h>
 
 #define AWS_ACCESS_KEY_ENV_VAR "AWS_ACCESS_KEY_ID"
 #define AWS_SECRET_KEY_ENV_VAR "AWS_SECRET_ACCESS_KEY"

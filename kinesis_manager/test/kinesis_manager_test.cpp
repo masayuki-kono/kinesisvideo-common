@@ -17,8 +17,8 @@
 #include <aws_common/sdk_utils/aws_error.h>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <kinesis-video-producer/KinesisVideoProducer.h>
-#include <kinesis-video-producer/Logger.h>
+#include <KinesisVideoProducer.h>
+#include <Logger.h>
 #include <kinesis_manager/common.h>
 #include <kinesis_manager/kinesis_stream_manager.h>
 #include <kinesis_manager/stream_definition_provider.h>
@@ -82,6 +82,7 @@ public:
       {test_prefix + PARAM_NS_SEPARATOR "fragment_acks", true},
       {test_prefix + PARAM_NS_SEPARATOR "restart_on_error", true},
       {test_prefix + PARAM_NS_SEPARATOR "recalculate_metrics", true},
+      {test_prefix + PARAM_NS_SEPARATOR "allow_stream_creation", true},
     };
     string_map_ = {
       {test_prefix + PARAM_NS_SEPARATOR "stream_name", "testStream"},
@@ -892,6 +893,7 @@ TEST(StreamDefinitionProviderSuite, getStreamDefinitionTest)
     bool_map[test_prefix + PARAM_NS_SEPARATOR "fragment_acks"],
     bool_map[test_prefix + PARAM_NS_SEPARATOR "restart_on_error"],
     bool_map[test_prefix + PARAM_NS_SEPARATOR "recalculate_metrics"],
+    bool_map[test_prefix + PARAM_NS_SEPARATOR "allow_stream_creation"],
     static_cast<NAL_ADAPTATION_FLAGS>(int_map[test_prefix + PARAM_NS_SEPARATOR "nal_adaptation_flags"]),
     int_map[test_prefix + PARAM_NS_SEPARATOR "frame_rate"],
     int_map[test_prefix + PARAM_NS_SEPARATOR "avg_bandwidth_bps"],
@@ -919,6 +921,7 @@ TEST(StreamDefinitionProviderSuite, getStreamDefinitionTest)
     bool_map[test_prefix + PARAM_NS_SEPARATOR "fragment_acks"],
     bool_map[test_prefix + PARAM_NS_SEPARATOR "restart_on_error"],
     bool_map[test_prefix + PARAM_NS_SEPARATOR "recalculate_metrics"],
+    bool_map[test_prefix + PARAM_NS_SEPARATOR "allow_stream_creation"],
     static_cast<NAL_ADAPTATION_FLAGS>(int_map[test_prefix + PARAM_NS_SEPARATOR "nal_adaptation_flags"]), 4914918,
     int_map[test_prefix + PARAM_NS_SEPARATOR "avg_bandwidth_bps"],
     seconds(int_map[test_prefix + PARAM_NS_SEPARATOR "buffer_duration"]),
