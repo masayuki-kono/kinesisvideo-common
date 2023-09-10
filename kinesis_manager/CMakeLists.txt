@@ -2,33 +2,35 @@ cmake_minimum_required(VERSION 2.8.3)
 project(kinesis_manager)
 set(KINESIS_MANAGER_VERSION 0.1.0)
 
-set(CMAKE_CXX_STANDARD 14)
-
-find_package(aws_common REQUIRED)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
 set(SERVICE_COMPONENTS kinesis)
-list(APPEND ${PROJECT_NAME}_IMPORTED_LIBRARIES aws-cpp-sdk-kinesis KinesisVideoProducer cproducer)
+
+find_package(aws_common REQUIRED)
+find_package(AWSSDK REQUIRED COMPONENTS ${SERVICE_COMPONENTS})
 find_package(CURL REQUIRED)
 
 ## Add KVS SDK libraries
 include(FindKVSSDK.cmake)
 
-
 #############
-## Library ##
+## Build ##
 #############
 
-## Declare a C++ library
 add_library(${PROJECT_NAME} SHARED src/stream_definition_provider.cpp 
   src/kinesis_stream_manager.cpp src/default_callbacks.cpp
   src/kinesis_video_stream_interface.cpp src/kinesis_video_producer_interface.cpp)
 
-  target_include_directories(${PROJECT_NAME} PRIVATE ${aws_common_INCLUDE_DIRS} ${AWSSDK_INCLUDE_DIR} ${KVSSDK_EXTERNAL_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE
+  ${aws_common_INCLUDE_DIRS}
+  ${AWSSDK_INCLUDE_DIR}
+  ${KVSSDK_EXTERNAL_INCLUDE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_IMPORTED_LIBRARIES} log4cplus )
-
+target_link_libraries(${PROJECT_NAME} ${AWSSDK_LINK_LIBRARIES} KinesisVideoProducer cproducer log4cplus )
 
 #############
 ## Tests ##
