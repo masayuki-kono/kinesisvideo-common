@@ -13,6 +13,7 @@ find_package(CURL REQUIRED)
 ## Add KVS SDK libraries
 include(FindKVSSDK.cmake)
 
+
 #############
 ## Library ##
 #############
@@ -26,7 +27,7 @@ add_library(${PROJECT_NAME} SHARED src/stream_definition_provider.cpp
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_link_libraries(${PROJECT_NAME}  ${${PROJECT_NAME}_IMPORTED_LIBRARIES} log4cplus )
+target_link_libraries(${PROJECT_NAME} ${${PROJECT_NAME}_IMPORTED_LIBRARIES} log4cplus )
 
 
 #############
